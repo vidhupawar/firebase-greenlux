@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NbLoginComponent, NbAuthSocialLink, NbAuthService, NB_AUTH_OPTIONS, NbLogoutComponent } from '@nebular/auth';
+import { NbAuthService, NB_AUTH_OPTIONS, NbLogoutComponent } from '@nebular/auth';
 import { Router } from '@angular/router';
-import { ChangeDetectorRef } from '@angular/core';
-import { getDeepFromObject } from '@nebular/auth/helpers';
 import { Inject } from '@angular/core';
 import { AuthService } from '../../backend/services/index';
 
@@ -28,7 +26,6 @@ export class LogoutComponent extends NbLogoutComponent implements OnInit {
         this.authService.doLogout().then( res => {
             this.router.navigate( ['/auth/login'] );
         }, err => {
-            console.log( err );
             this.router.navigate( ['/auth/login'] );
         } );
     }

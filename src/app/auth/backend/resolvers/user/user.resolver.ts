@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Router } from "@angular/router";
-import { FirebaseUserModel } from "../../../backend/entity";
-import { UserService } from "../../../backend/services";
+import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { FirebaseUserModel } from '../../../backend/entity';
+import { UserService } from '../../../backend/services';
 
 @Injectable()
 export class UserResolver implements Resolve<FirebaseUserModel> {
@@ -10,7 +10,7 @@ export class UserResolver implements Resolve<FirebaseUserModel> {
 
     resolve( route: ActivatedRouteSnapshot ): Promise<FirebaseUserModel> {
 
-        let user = new FirebaseUserModel();
+        const user = new FirebaseUserModel();
 
         return new Promise(( resolve, reject ) => {
             this.userService.getCurrentUser()
@@ -20,8 +20,7 @@ export class UserResolver implements Resolve<FirebaseUserModel> {
                         user.name = res.displayName;
                         user.provider = res.providerData[0].providerId;
                         return resolve( user );
-                    }
-                    else {
+                    } else {
                         user.image = res.photoURL;
                         user.name = res.displayName;
                         user.provider = res.providerData[0].providerId;
@@ -30,7 +29,7 @@ export class UserResolver implements Resolve<FirebaseUserModel> {
                 }, err => {
                     this.router.navigate( ['/login'] );
                     return reject( err );
-                } )
-        } )
+                } );
+        } );
     }
 }

@@ -27,6 +27,7 @@ export class UserComponent implements OnInit {
         public fireDb: AngularFirestore,
         private themeService: NbThemeService
     ) {
+
     }
 
     ngOnInit(): void {
@@ -40,20 +41,19 @@ export class UserComponent implements OnInit {
 
         this.item = this.fireDb.collection( 'setting' ).valueChanges();
         this.themeService.changeTheme( 'cosmic' );
-        this.userService.getCurrentUser()
-            .then( user => {
-                this.item.subscribe(( data: any ) => {
-                    data.map( ele => {
-                        if ( ele.Site != ( null || "" ) ) {
-                            ele.Site.map( element => {
-                                if ( ( user.email ).toUpperCase() == ( element.email ).toUpperCase() ) {
-                                    this.themeService.changeTheme( element.colourCode );
-                                }
-                            } )
-                        }
-                    } );
-                } )
-            } )
+        this.userService.getCurrentUser().then( user => {
+            this.item.subscribe(( data: any ) => {
+                data.map( ele => {
+                    if ( ele.Site != ( null || "" ) ) {
+                        ele.Site.map( element => {
+                            if ( ( user.email ).toUpperCase() == ( element.email ).toUpperCase() ) {
+                                this.themeService.changeTheme( element.colourCode );
+                            }
+                        } )
+                    }
+                } );
+            } );
+        } );
     }
 
     createForm( name ) {
@@ -65,16 +65,9 @@ export class UserComponent implements OnInit {
     save( value ) {
         this.userService.updateCurrentUser( value )
             .then( res => {
-                console.log( res );
-            }, err => console.log( err ) )
+            }, err => {
+
+            } );
     }
 
-    logout() {
-        this.authService.doLogout().then(( res ) => {
-            this.themeService.changeTheme( "corporate" );
-            this.location.back();
-        }, ( error ) => {
-            console.log( "Logout error", error );
-        } );
-    }
 }

@@ -1,6 +1,5 @@
 import { Component, ChangeDetectorRef, Inject, OnInit } from '@angular/core';
-import { Router, Params } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NbRegisterComponent, NbAuthService, NB_AUTH_OPTIONS, NbAuthSocialLink } from '@nebular/auth';
 import { AuthService } from '../../backend/services/index';
 
@@ -11,7 +10,6 @@ import { AuthService } from '../../backend/services/index';
 } )
 export class RegisterComponent extends NbRegisterComponent implements OnInit {
 
-    registerForm: FormGroup;
     errorMessage: string = '';
     successMessage: string = '';
 
@@ -32,33 +30,33 @@ export class RegisterComponent extends NbRegisterComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.errors = this.messages = [];
+        this.errors = this.messages = new Array();
         this.showMessages.error = false;
         this.showMessages.success = false;
         this.submitted = false;
     }
 
     tryGoogleLogin() {
-        this.errors = this.messages = [];
+        this.errors = this.messages = new Array();
         this.showMessages.error = false;
         this.showMessages.success = false;
         this.submitted = true;
         this.authService.doGoogleLogin().then( res => {
-                this.router.navigate( ['/pages'] );
-            }, err => {
-                this.submitted = false;
-                this.showMessages.error = true;
-                this.showMessages.success = false;
-                this.errors.push( err.message );
-            } );
+            this.router.navigate( ['/pages'] );
+        }, err => {
+            this.submitted = false;
+            this.showMessages.error = true;
+            this.showMessages.success = false;
+            this.errors.push( err.message );
+        } );
     }
 
     register(): void {
-        this.errors = this.messages = [];
+        this.errors = this.messages = new Array();
         this.showMessages.error = false;
         this.showMessages.success = false;
         this.submitted = true;
-        if ( this.user.password !== this.user.confirmPassword ) {
+        if ( this.user.password != this.user.confirmPassword ) {
             this.showMessages.error = true;
             this.showMessages.success = false;
             this.errors.push( 'Password and Repeat Password Not Same' );
